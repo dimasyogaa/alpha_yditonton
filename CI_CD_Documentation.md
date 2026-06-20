@@ -27,7 +27,7 @@ Jika Anda perlu memperbarui atau mengambil *Build Status Badge* GitHub Actions s
 1. Buka repositori proyek ini di situs web **GitHub**.
 2. Klik tab **Actions** yang berada di bagian atas halaman repositori (bersebelahan dengan tab *Pull requests*).
 3. Pada panel menu di sebelah kiri, klik nama *workflow* yang telah dibuat (misalnya **Flutter CI**).
-4. Perhatikan di pojok kanan atas halaman *workflow* (tepat di bawah deretan menu navigasi atas), terdapat tombol berikon titik tiga (**...**). Klik tombol tersebut, lalu pilih **Create status badge**.
+4. Perhatikan di pojok kanan atas halaman *workflow* (tepatnya di sebelah kanan kotak pencarian **"🔍 Filter workflow runs"**), terdapat tombol berikon titik tiga (**...**). Klik tombol tersebut, lalu pilih **Create status badge**.
 5. Akan muncul sebuah *dialog box*. Pada bagian *Branch*, pastikan Anda memilih branch yang digunakan (misalnya `main` atau `deploy`).
 6. Klik tombol **Copy status badge Markdown** untuk menyalin kodenya.
 7. Buka file `README.md` di proyek/IDE Anda, lalu *paste* (tempelkan) kode markdown tersebut (idealnya di bagian paling atas).
