@@ -1,8 +1,7 @@
 workflows:
   release-workflow:
     name: Yditonton CI/CD Release
-    # Anda bisa menggunakan instance_type mac_mini_m1 atau linux_x2 (linux lebih cepat untuk android)
-    instance_type: linux_x2
+    # Sengaja tidak mendefinisikan instance_type agar Codemagic otomatis memilih mesin gratis (default) yang tersedia untuk akun Anda
     environment:
       flutter: stable
     triggering:

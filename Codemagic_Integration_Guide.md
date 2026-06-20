@@ -25,8 +25,10 @@ Pada proyek ini, file `codemagic.yaml` sudah disiapkan untuk menjalankan *depend
 1. **Pastikan Anda telah melakukan `git commit` dan `push`** (*deploy*) file `codemagic.yaml` ini ke GitHub repository Anda agar server Codemagic bisa menemukannya.
 2. Di halaman pengaturan aplikasi Anda di Codemagic, perhatikan bagian tengah layar di sebelah *dropdown* **Workflow: Default Workflow**.
 3. Klik teks tautan bertuliskan **"Switch to YAML configuration"**.
-4. Codemagic akan otomatis beralih mode dan langsung membaca skrip CI/CD yang ada di dalam repository Anda.
-5. Setelah itu, klik tombol biru **Start your first build** di sudut kanan atas untuk memicu proses *testing* dan *build* untuk pertama kalinya.
+4. Codemagic akan otomatis beralih mode dan langsung menampilkan isi skrip CI/CD (`codemagic.yaml`) yang berhasil dibacanya dari repository Anda.
+5. **Cek Status Build:** Karena Anda sudah mengonfigurasi *trigger* otomatis, silakan cek menu **Builds** (ikon lingkaran bercentang) di bilah menu kiri. Jika Anda baru saja melakukan *push* ke branch target (misalnya branch `deploy`), proses *testing* dan *build* kemungkinan besar **sudah otomatis berjalan**.
+6. **Memicu Secara Manual:** Jika ternyata proses belum berjalan otomatis (misal karena Anda hanya melakukan pengaturan awal), Anda cukup klik tombol biru **"Start your first build ->"** di pojok kanan atas. Pilih branch `deploy`, pilih *workflow* yang tersedia, lalu klik tombol **Start**.
+   > **💡 Tip (Penting):** Jika tombol *"Start your first build"* tersebut masih berwarna abu-abu dan tidak bisa diklik (padahal file YAML sudah muncul di layar Codemagic), lakukan **Hard Refresh (Tekan F5 atau Ctrl+R)** pada *browser* Anda. Ini adalah *glitch* antarmuka (UI) dari *website* Codemagic yang cukup umum terjadi saat sinkronisasi file pertama kali. Setelah halaman dimuat ulang secara penuh, tombol tersebut akan otomatis merespons file YAML Anda dan berubah menjadi biru!
 
 ---
 
