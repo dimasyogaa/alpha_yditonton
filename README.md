@@ -1,6 +1,6 @@
 # yditonton
 
-[![Flutter CI](https://github.com/dimasyogaa/alpha_yditonton/actions/workflows/main.yml/badge.svg)](https://github.com/dimasyogaa/alpha_yditonton/actions/workflows/main.yml)
+[![Flutter CI](https://github.com/dimasyogaa/alpha_yditonton/actions/workflows/main.yml/badge.svg?branch=deploy)](https://github.com/dimasyogaa/alpha_yditonton/actions/workflows/main.yml)
 
 Yditonton is an entertainment platform that provides comprehensive information about movies and TV series. Users can explore various contents, view details, and add movies to their favorites list.
 
