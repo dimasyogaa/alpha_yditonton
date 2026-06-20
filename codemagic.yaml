@@ -1,0 +1,41 @@
+workflows:
+  release-workflow:
+    name: Yditonton CI/CD Release
+    # Anda bisa menggunakan instance_type mac_mini_m1 atau linux_x2 (linux lebih cepat untuk android)
+    instance_type: linux_x2
+    environment:
+      flutter: stable
+    triggering:
+      events:
+        - push
+        - pull_request
+      branch_patterns:
+        - pattern: deploy
+          include: true
+          source: true
+    scripts:
+      - name: Get All Dependencies
+        script: |
+          # Install dependensi untuk root dan semua modul
+          flutter pub get
+          cd core && flutter pub get && cd ..
+          cd search && flutter pub get && cd ..
+          cd about && flutter pub get && cd ..
+          cd movie && flutter pub get && cd ..
+          cd tv && flutter pub get && cd ..
+          
+      - name: Run Unit Tests
+        script: |
+          # Jalankan testing di semua modul yang memiliki testing
+          cd core && flutter test && cd ..
+          cd search && flutter test && cd ..
+          cd movie && flutter test && cd ..
+          cd tv && flutter test && cd ..
+          
+      - name: Build Android APK
+        script: |
+          # Membangun file .apk dalam mode release
+          flutter build apk --release
+          
+    artifacts:
+      - build/app/outputs/flutter-apk/app-release.apk
