@@ -104,3 +104,15 @@ Secara teori Anda masih bisa mengakalinya dari Windows, tapi sangat **tidak disa
 - Saat Anda menyalakan *Capabilities* di Xcode, Xcode tidak hanya mengubah `Info.plist`, melainkan ia juga membuat file khusus bernama `Runner.entitlements` dan mengubah kode di dalam file inti proyek yaitu `project.pbxproj`.
 - File `project.pbxproj` ini adalah "jantung"-nya proyek iOS yang strukturnya sangat panjang, rumit, dan di-*generate* otomatis oleh mesin. Memodifikasi file ini dengan mengetik manual lewat VS Code di Windows sangat berisiko membuat seluruh *build* iOS Anda *corrupt* (rusak/gagal *compile*).
 - Solusi terbaik jika Anda membutuhkan fitur *Capabilities* ini tanpa membeli MacBook adalah: meminjam Mac milik teman selama 10 menit, atau menyewa layanan *Cloud Mac* (seperti MacinCloud) hanya untuk membuka Xcode, mencentang *Capabilities* yang dibutuhkan, dan menyimpannya (*push*) kembali ke GitHub.
+
+**Q: Saya melihat tahapan "Installing SDKs" di log Codemagic memakan waktu sangat lama (bermenit-menit). Apakah Codemagic akan meng-install ulang SDK dari nol setiap kali saya melakukan *push*?**
+
+**A:** **Iya dan Tidak.**
+- **Iya**, secara prinsip CI/CD yang bersih (*Clean Environment*), setiap kali Anda memicu proses *build*, Codemagic akan menyiapkan sebuah mesin virtual (*Virtual Machine*) yang benar-benar baru dan kosong. Hal ini bertujuan agar proses *build* Anda murni dan tidak terkontaminasi oleh *file-file* sisa dari *build* sebelumnya. Jadi secara teknis, ia memang di-install dari awal.
+- **TIDAK selama itu**, karena sistem Codemagic memiliki mekanisme **Cache internal** yang cerdas. Pada *build* yang pertama kali di tipe mesin yang baru (seperti perpindahan ke *Mac mini M2*), wajar jika sistem butuh waktu lama (**sekitar 5 hingga 10 menit**) untuk mengunduh dan mengekstrak *file* arsip Flutter dari nol. Namun pada *build-build* Anda yang selanjutnya, Codemagic umumnya akan menggunakan versi SDK yang sudah tersimpan di dalam sistem *cache* mereka. Alhasil, tahapan "Installing SDKs" di masa mendatang akan dapat diselesaikan dalam waktu yang jauh lebih singkat (**biasanya hanya hitungan detik, atau maksimal di bawah 1 menit**).
+
+**Q: Bagaimana jika proses "Installing SDKs" memakan waktu sangat tidak wajar (misalnya *stuck* hingga 15-20 menit lebih)?**
+
+**A:** Jika itu terjadi, itu bukanlah proses instalasi yang normal, melainkan murni **glitch/hang pada infrastruktur Virtual Machine Codemagic** (sering terjadi pada mesin *macOS* yang sedang padat). 
+- **Langkah darurat:** Segera klik tombol **Cancel build** agar sisa kuota gratis 500 menit Anda tidak tersedot sia-sia oleh mesin yang sedang bengong (*hang*).
+- **Solusinya:** Jika Anda saat ini hanya bertujuan mem- *build* aplikasi **Android (.apk)**, sangat disarankan untuk menuliskan secara eksplisit `instance_type: linux` di dalam skrip `codemagic.yaml`. Mesin Linux untuk *build* Android jauh lebih stabil, ekstraksi file berjalan kilat, dan sangat jarang mengalami *stuck* dibanding mesin Mac.

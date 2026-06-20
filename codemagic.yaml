@@ -1,7 +1,8 @@
 workflows:
   release-workflow:
     name: Yditonton CI/CD Release
-    # Sengaja tidak mendefinisikan instance_type agar Codemagic otomatis memilih mesin gratis (default) yang tersedia untuk akun Anda
+    # Kita tetapkan mesin Linux standar (karena sangat cepat dan stabil untuk build Android di tier gratis)
+    instance_type: linux
     environment:
       flutter: stable
     triggering:
