@@ -201,7 +201,7 @@ class TVList extends StatelessWidget {
                   imageUrl: '$baseImageUrl${tv.posterPath}',
                   placeholder: (context, _) =>
                       Center(child: CircularProgressIndicator()),
-                  errorWidget: (context, _, _) => Icon(Icons.error),
+                  errorWidget: (context, url, error) => Icon(Icons.error),
                 ),
               ),
             ),

@@ -40,7 +40,7 @@ class EpisodeDetailPage extends StatelessWidget {
                     placeholder: (context, _) => const Center(
                       child: CircularProgressIndicator(),
                     ),
-                    errorWidget: (context, _, _) => const Icon(Icons.error),
+                    errorWidget: (context, url, error) => const Icon(Icons.error),
                   )
                 : Container(
                     height: 200,

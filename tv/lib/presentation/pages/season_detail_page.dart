@@ -111,7 +111,7 @@ class _SeasonDetailPageState extends State<SeasonDetailPage> {
                                               const Center(
                                                   child:
                                                       CircularProgressIndicator()),
-                                          errorWidget: (context, _, _) =>
+                                          errorWidget: (context, url, error) =>
                                               const Icon(Icons.error),
                                         )
                                       : const SizedBox(

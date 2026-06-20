@@ -37,7 +37,7 @@ class TVCard extends StatelessWidget {
                   color: Colors.grey.shade900,
                   child: const Center(child: CircularProgressIndicator()),
                 ),
-                errorWidget: (context, _, _) => Container(
+                errorWidget: (context, url, error) => Container(
                   height: 180,
                   color: Colors.grey.shade900,
                   child: const Icon(Icons.error),

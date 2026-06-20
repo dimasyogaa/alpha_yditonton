@@ -201,7 +201,7 @@ class MovieList extends StatelessWidget {
                   imageUrl: '$baseImageUrl${movie.posterPath}',
                   placeholder: (context, _) =>
                       Center(child: CircularProgressIndicator()),
-                  errorWidget: (context, _, _) => Icon(Icons.error),
+                  errorWidget: (context, url, error) => Icon(Icons.error),
                 ),
               ),
             ),

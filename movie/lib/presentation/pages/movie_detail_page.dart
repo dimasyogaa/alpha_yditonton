@@ -79,7 +79,7 @@ class DetailContent extends StatelessWidget {
       width: screenWidth,
       placeholder: (context, _) =>
           const Center(child: CircularProgressIndicator()),
-      errorWidget: (context, _, _) => const Icon(Icons.error),
+      errorWidget: (context, url, error) => const Icon(Icons.error),
     );
   }
 
@@ -252,7 +252,7 @@ class DetailContent extends StatelessWidget {
                   imageUrl: 'https://image.tmdb.org/t/p/w500${item.posterPath}',
                   placeholder: (context, _) =>
                       const Center(child: CircularProgressIndicator()),
-                  errorWidget: (context, _, _) => const Icon(Icons.error),
+                  errorWidget: (context, url, error) => const Icon(Icons.error),
                 ),
               ),
             ),
