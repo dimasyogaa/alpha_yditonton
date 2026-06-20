@@ -54,9 +54,9 @@ Format Markdown yang digunakan adalah:
 1. **`<app-id>`**: Dapatkan dari URL saat Anda membuka aplikasi di Codemagic UI. Salin teks ID yang berada setelah `https://codemagic.io/app/`. (Contoh: `5fcd4dc959d78f8de3d0af97`).
 2. **`<workflow-id>`**: Ini adalah nama *workflow* yang didefinisikan di dalam `codemagic.yaml`. Pada proyek ini, gunakan ID: `release-workflow`.
 
-Sehingga contoh penerapannya di `README.md` nanti akan terlihat seperti ini:
+Sehingga karena ID aplikasi kita adalah `6a37138f33b051c12a7b3e50`, kode penerapannya di `README.md` menjadi persis seperti ini:
 ```markdown
-[![Codemagic build status](https://api.codemagic.io/apps/masukkan_app_id_anda/release-workflow/status_badge.svg)](https://codemagic.io/app/masukkan_app_id_anda/release-workflow/latest_build)
+[![Codemagic build status](https://api.codemagic.io/apps/6a37138f33b051c12a7b3e50/release-workflow/status_badge.svg)](https://codemagic.io/app/6a37138f33b051c12a7b3e50/release-workflow/latest_build)
 ```
 
 ---
@@ -116,3 +116,9 @@ Secara teori Anda masih bisa mengakalinya dari Windows, tapi sangat **tidak disa
 **A:** Jika itu terjadi, besar kemungkinan itu bukanlah proses instalasi yang normal. Ada dua kemungkinan utama penyebabnya:
 1. **Glitch UI (Tampilan Web):** Sering kali proses *build* sebenarnya sudah selesai atau sedang berjalan normal di *server* Codemagic, namun sinkronisasi tampilan *website* di *browser* Anda terputus (*disconnect*). **Solusi Pertamanya:** Coba lakukan **Hard Refresh (tekan F5 atau Ctrl+R)** pada *browser* Anda. Sangat sering terjadi, setelah halaman dimuat ulang, status *build* yang tadinya terlihat macet belasan menit tiba-tiba berubah menjadi sudah sukses/selesai!
 2. **Glitch Server (Mesin Hang):** Jika setelah di-*refresh* ternyata durasinya masih terus berdetak dan *stuck* di langkah tersebut, maka itu murni mesin *Virtual Machine* Codemagic-nya yang sedang *hang* (sering terjadi pada mesin *macOS* yang *overload*). **Langkah Darurat:** Segera klik tombol **Cancel build**, lalu jalankan *build* baru agar sistem Codemagic memindahkan Anda ke mesin server lain yang lebih sehat. Jangan dibiarkan terus berjalan, agar sisa kuota gratis 500 menit Anda tidak tersedot sia-sia.
+
+**Q: Mengapa saya mendapatkan error SQLite "Database is locked" atau "Disk I/O error" saat tahap `Run Unit Tests` di Codemagic?**
+
+**A:** Ini terjadi karena secara bawaan (*default*), perintah `flutter test` menjalankan file-file *testing* secara **paralel (bersamaan)**. Karena pengujian Anda menggunakan satu file fisik *database* lokal SQLite yang sama (misal `ditonton.db`), eksekusi paralel ini memicu tabrakan akses antar-file *testing*.
+- **Solusinya:** Tambahkan *flag* `--concurrency=1` pada instruksi di file `codemagic.yaml` (misal: `flutter test --concurrency=1`). Ini memaksa sistem memproses file pengujian satu per satu secara berurutan, sehingga konflik akses *database* tidak terjadi.
+- **Tip Skrip Shell (Subshell):** Selain itu, selalu gunakan tanda kurung untuk membungkus urutan perintah *testing* di dalam folder, misalnya: `(cd nama_folder && flutter test)`. Ini dinamakan teknik **Subshell**, yang sangat berguna untuk mencegah terminal salah kamar (*"No such file or directory"*) bila terjadi *error* di pertengahan skrip, karena posisi direktori akan selalu dikembalikan ke folder utama (*root*) setelah eksekusi di dalam tanda kurung selesai.
