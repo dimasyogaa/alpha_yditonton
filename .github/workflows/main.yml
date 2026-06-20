@@ -2,9 +2,9 @@ name: Flutter CI
 
 on:
   push:
-    branches: [ main, master ]
+    branches: [ deploy ]
   pull_request:
-    branches: [ main, master ]
+    branches: [ deploy ]
 
 jobs:
   build:
@@ -16,7 +16,7 @@ jobs:
     - name: Set up Flutter
       uses: subosito/flutter-action@v2
       with:
-        flutter-version: '3.16.x' # Or whatever your version is, but v2 auto downloads latest if omitted, but safe to leave
+        flutter-version: '3.16.x'
         channel: 'stable'
 
     - name: Get dependencies (Root)
