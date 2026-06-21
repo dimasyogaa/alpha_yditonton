@@ -38,11 +38,10 @@ Aplikasi ini dijamin keamanannya menggunakan *SSL Pinning* untuk mencegah serang
 - Sertifikat ini dikonfigurasikan pada berkas `core/lib/utils/http_ssl_pinning.dart`.
 - Instansiasi `http.Client` yang diamankan tersebut di-*inject* secara global melalui `lib/injection.dart` sehingga semua pemanggilan API menggunakan klien yang aman ini secara otomatis.
 
-## 5. Continuous Integration (CI)
-Terdapat *workflow* otomatis berbasis GitHub Actions di dalam folder `.github/workflows/main.yml`.
-Setiap kali ada _Push_ atau _Pull Request_ ke *branch* utama, *workflow* ini akan otomatis berjalan di *server* GitHub untuk:
-1. Mengambil dependensi (`flutter pub get`) di seluruh modul.
-2. Menjalankan *test* (`flutter test`) di seluruh modul secara individual (seperti yang dijelaskan pada bagian Testing).
+## 5. Continuous Integration & Delivery (CI/CD)
+Proyek ini mengadopsi struktur *dual-pipeline* untuk memaksimalkan otomatisasi:
+- **GitHub Actions (`.github/workflows/main.yml`)**: Digunakan sebagai palang pintu (*gatekeeper*) utama. Setiap kali ada *Push* atau *Pull Request* ke *branch* `deploy`, GitHub Actions otomatis menjalankan `flutter test` untuk memverifikasi bahwa tidak ada kode rusak yang lolos.
+- **Codemagic (`codemagic.yaml`)**: Bertindak sebagai mesin *Build* dan *Continuous Delivery* (CD). Ia otomatis mengamankan *database testing*, melakukan kompilasi proyek menjadi rilis Android (`app-release.apk`), lalu mendistribusikannya secara otomatis (*Publish*). Panduan lengkap Codemagic (serta trik penanganan bug UI/server) telah dirangkum khusus di dalam berkas **`Codemagic_Integration_Guide.md`**.
 
 ## 6. Firebase Integration (Analytics & Crashlytics)
 Untuk memantau stabilitas aplikasi secara langsung di tangan pengguna, proyek ini telah diintegrasikan dengan Firebase:
@@ -51,7 +50,9 @@ Untuk memantau stabilitas aplikasi secara langsung di tangan pengguna, proyek in
 - Panduan *setup* integrasi selengkapnya (berkenaan dengan `flutterfire configure`) dapat Anda temukan secara detail di dalam berkas **`FIREBASE_INTEGRATION_GUIDE.md`**.
 
 ## 7. Skrip Otomatisasi (Shell Scripts)
-Mengingat arsitektur Modularisasi yang kita pakai telah memecah aplikasi menjadi berbagai *folder* (seperti `core`, `movie`, `tv`, dll.), maka mengeksekusi perintah dasar Flutter satu per satu di tiap direktori akan sangat memakan waktu. Oleh karena itu, disediakan dua skrip otomatisasi di dalam *root directory* untuk membantu developer:
+Mengingat arsitektur Modularisasi yang kita pakai telah memecah aplikasi menjadi berbagai *folder* (seperti `core`, `movie`, `tv`, dll.), maka mengeksekusi perintah dasar Flutter satu per satu di tiap direktori akan sangat memakan waktu. Oleh karena itu, disediakan beberapa skrip otomatisasi di dalam *root directory* untuk membantu *developer*:
 
-- **`test.sh`**: Digunakan untuk memicu penjalanan *unit/widget test* (`flutter test`) secara massal di semua modul sekaligus. Skrip ini akan berkeliling ke setiap *package* untuk mengeksekusi *testing*, lalu menggabungkan hasil laporan persentasenya (Coverage Report) agar terpusat. Eksekusi menggunakan perintah: `bash test.sh`.
-- **`clean.sh`**: Digunakan untuk membersihkan hasil-*build* (*build cache*, direktori `build/`, dll.) menggunakan perintah `flutter clean` di proyek utama beserta seluruh *sub-modul*nya. Sangat berguna ketika Anda menghadapi error kompilasi acak dan ingin me-reset *cache* aplikasi secara total. Eksekusi menggunakan perintah: `bash clean.sh`.
+- **`pub_get.sh`**: Digunakan untuk mengunduh ulang seluruh *dependencies* (`flutter pub get`) secara otomatis di *root project* dan menyapu seluruh *sub-modul*nya. Sangat berguna untuk di-klik sesaat setelah Anda baru saja melakukan `git pull` atau berpindah *branch*. Eksekusi menggunakan perintah: `bash pub_get.sh` atau `.\pub_get.sh`.
+- **`test.sh`**: Digunakan untuk memicu penjalanan *unit/widget test* (`flutter test`) secara massal di semua modul sekaligus. Skrip ini akan berkeliling ke setiap *package* untuk mengeksekusi *testing*, lalu menggabungkan hasil laporan persentasenya (Coverage Report) agar terpusat. Eksekusi menggunakan perintah: `bash test.sh` atau `.\test.sh`.
+- **`clean.sh`**: Digunakan untuk membersihkan hasil-*build* (*build cache*, direktori `build/`, dll.) menggunakan perintah `flutter clean` di proyek utama beserta seluruh *sub-modul*nya. Sangat berguna ketika Anda menghadapi error kompilasi acak dan ingin me-reset *cache* aplikasi secara total. Eksekusi menggunakan perintah: `bash clean.sh` atau `.\clean.sh`.
+- **`deploy.sh`**: Skrip otomatis yang langsung melakukan penggabungan *branch* (misal dari `main` ke `deploy`), melakukan *push* kode, kemudian memicu *pipeline* Codemagic. Skrip ini ditujukan untuk kepraktisan pengiriman kode (Deployment) dengan sekali klik. Eksekusi menggunakan perintah: `bash deploy.sh` atau `.\deploy.sh`.
